@@ -1,0 +1,16 @@
+-- Schema real do banco (fornecido pelo cliente) — o código está 100% alinhado a ele.
+-- Tabelas utilizadas: configuracoes, convidados, presentes, reservas_presentes.
+-- Tabelas existentes mas não utilizadas (funcionalidades não solicitadas): mensagens, galeria.
+--
+-- Convenções adotadas pelo código:
+--   convidados.telefone NULL  -> convidado entra apenas com o nome (sem etapa dos 4 dígitos)
+--   RSVP grava: status, quantidade_confirmada (limitada a quantidade_convites),
+--               restricao_alimentar, observacoes, confirmado_em
+--   Reservar presente:   reservas_presentes(forma='presente', confirmado=true) + presentes.status='reservado'
+--   Contribuição Pix:    reservas_presentes(forma='pix', valor_pix, confirmado=false)
+--   "Valor recebido via Pix" no dashboard = SUM(valor_pix) WHERE forma='pix'
+--   Excluir convidado: mensagens.convidado_id vira NULL, reservas dele são apagadas
+--   Excluir presente:  reservas ligadas a ele são apagadas antes
+--   Upload de imagem:  Storage bucket 'images' (público), pasta presentes/
+--   configuracoes.qr_code_pix: se contiver um payload BR Code (não-URL), é usado no QR;
+--                              senão o payload é gerado a partir de chave_pix + favorecido_pix.
